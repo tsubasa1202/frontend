@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+	<title></title>
+	<style type="text/css">
+		
+		/*トップページ内「更新情報・お知らせ」ブロック
+-----------------------------------------------------------------*/
+#new dl{
+	margin: 0px 20px 0px;
+}
+#new dt {
+	font-weight: bold;
+	float: left;
+	width: 8em;
+	color: red;
+}
+#new dd {
+	border-bottom: 1px solid #ccc;
+	padding-left: 8em;
+}
+	</style>
+
+
+</head>
+
+<body>
+<input type="button" id="addForm" value="追加">
+<section id="new">
+<h2>お知らせ・更新情報</h2>
+<dl>
+<dt>2015/00/00</dt>
+<dd>ホームページリニューアルしました！</dd>
+<dt>2015/00/00</dt>
+<dd>ホームページ準備中です。</dd>
+</dl>
+</section>
+
+<h5>追加されていきます</h5>
+
+<div class="test">
+
+</div>
+
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+var newsLink = $('h5');
+		$("#addForm").click(function(){
+			$(".test").append(newsLink);
+		});
+</script>
+
+
+
+</body>
+</html>

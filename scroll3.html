@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>jQueryを使ってスクロールしてデータ読み込み</title>
+    <style type="text/css">
+    #debug{
+        position: fixed;
+        margin-left: 300px;
+        background-color: red;
+    }
+     #dddd{
+        position: fixed;
+        margin-left: 300px;
+        background-color: blue;
+    }     
+
+    </style>
+  </head>
+  <body>
+    <h1>名前と住所</h1>
+<div style="padding:20px 20px 100px 20px">
+<table class="table table-striped table-bordered" border="1">
+<div id="debug"><div>
+
+<div id="dddd"><div>
+            <thead>
+                <tr>
+                    <th>名前</th>
+                    <th>住所</th>
+                <tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                    <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+                <tr>
+                    <td>佐藤</td>
+                    <td>千葉県千葉市</td>
+                </tr>
+                <tr>
+                    <td>山田</td>
+                    <td>埼玉県さいたま市</td>
+                </tr>
+                <tr>
+                    <td>田中</td>
+                    <td>神奈川県横浜市</td>
+                </tr>
+            <!-- ここに読み込まれたデータが追加される -->
+            </tbody>
+        </table>
+    </div>
+
+<!-- jQueryを読み込み -->
+<script src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+<!--
+// データを受け取ったかどうか制御する変数
+var gotRequestSuccessfully = false;
+var count = 0;
+var popularArticleCount = 0;
+var publicArticleCount = 0;
+var otherArticleCount = 0;
+
+// 最下部にスクロールした時に発生するイベント
+$(window).on("scroll", function() {
+    console.log(gotRequestSuccessfully);
+    scrollHeight = $(document).height();
+    scrollPosition = $(window).height() + $(window).scrollTop();
+    $('#debug').text(scrollPosition + " px " + scrollHeight + " " + (scrollHeight - scrollPosition) + "読み込み回数" + count);
+    if ( scrollHeight - scrollPosition == 0) {//3記事分と余白分を足して 30 * 3 + 100
+        
+        if(gotRequestSuccessfully == false){
+
+            switch(count % 3){
+                case 0:
+                    getPopularArticle(); 
+                    console.log("getPopularArticle");
+                    break;
+                case 1:
+                    getPublicArticle(); 
+                    console.log("getPublicArticle");
+                    break;
+                case 2:
+                    getOtherArticle(); 
+                    console.log("getOtherArticle");
+                    break;
+            }
+
+               
+            $('#debug').text("データを取得します");
+
+       }
+    } else {
+        //それ以外のスクロールの位置の場合
+        gotRequestSuccessfully = false;
+        $('#dddd').text("データを取得できません");
+    }
+    
+});
+
+//APIからJSONのデータをもらってくる関数
+//ajaxだけど同期通信にする
+//データはJSONで取得する。
+function getPopularArticle() {
+    $('#debug').text("データを読み込みます");
+    $.ajax({
+        url: 'dbtest.php?action=getPopularArticle&count=' + popularArticleCount,//ここにはJSON形式のデータを送ってくるAPIのURLを書く
+        type: "GET",
+        dataType: "JSON",    // 形式はJSON
+        //async: true,        // 非同期にしない
+        success: function (data) {
+            
+            if(data.length != 0){
+            　　　// データが存在するとき
+                gotRequestSuccessfully = true;
+                for(var i = 0; i < data.length; i++){
+                    var str = addToTable(data[i]);
+                    $('tbody').append(str);
+                }
+
+            }else{
+                 $('#debug').text("データがありません");
+            }
+            count++;
+            popularArticleCount++;
+            //gotRequestSuccessfully = false; 
+        }
+    });
+}
+
+function getPublicArticle() {
+    $('#debug').text("データを読み込みます");
+    $.ajax({
+        url: 'dbtest.php?action=getPublicArticle&count=' + publicArticleCount,//ここにはJSON形式のデータを送ってくるAPIのURLを書く
+        type: "GET",
+        dataType: "JSON",    // 形式はJSON
+        //async: true,        // 非同期にしない
+        success: function (data) {
+            
+            if(data.length != 0){
+            　　　// データが存在するとき
+                
+                publicArticleCount++;
+                for(var i = 0; i < data.length; i++){
+                    var str = addToTable(data[i]);
+                    $('tbody').append(str);
+                }
+
+            }else{
+                 $('#debug').text("データがありません");
+            }
+            gotRequestSuccessfully = true;
+            count++;
+            //gotRequestSuccessfully = false; 
+        }
+    });
+}
+
+function getOtherArticle() {
+    $('#debug').text("データを読み込みます");
+    $.ajax({
+        url: 'dbtest.php?action=getotherArticle&count=' + otherArticleCount,//ここにはJSON形式のデータを送ってくるAPIのURLを書く
+        type: "GET",
+        dataType: "JSON",    // 形式はJSON
+        //async: true,        // 非同期にしない
+        success: function (data) {
+            
+            if(data.length != 0){
+            　　　// データが存在するとき
+                gotRequestSuccessfully = true;
+                
+                for(var i = 0; i < data.length; i++){
+                    var str = addToTable(data[i]);
+                    $('tbody').append(str);
+                }
+
+            }else{
+                 $('#debug').text("データがありません");
+            }
+            count++;
+            otherArticleCount++;
+            //gotRequestSuccessfully = false; 
+        }
+    });
+}
+
+// テーブルに追加するためのHTMLを返す
+// 引数のdataはJSONで、{"name":"鈴木", "address":"東京都大田区"}という形式を想定
+function addToTable(data){
+    var strTR = '<tr bgcolor="red">';
+    var str = strTR
+                + '<td>' + data.categoryid + '</td>'
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.click + '</td>'
+                + '</tr>';
+    return str;
+}
+
+-->
+</script>
+  </body>
+</html>

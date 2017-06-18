@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>jQuery Mobile</title>
+<link rel="stylesheet"
+  href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js">
+</script>
+<script>
+$(document).on('pagecreate', function(e, d) {
+  // 追加コンテンツを読み込み済みか（フラグ変数）
+  var read = false;
+
+  // 1スクロール終了時にページ末尾に到達していたら、追加コンテンツをロード
+  $(window).on('scrollstop', function(e) {
+
+    // 追加コンテンツを読み込み済みであれば、処理を終了
+    if (read) { return; }
+
+    // 2ページ末尾に到達しているかを判定
+    if ($(this).scrollTop() + $(this).height() > $(document).height() - 50) {
+
+      // 3「現在のページ.dat」を取得＆ページ末尾に追加
+      $.get('add.dat')
+        .done(function(data){
+          $('#page_main').append(data);
+          // フラグをtrueに反転
+          read = true;
+        });
+    }
+  });
+});
+</script>
+</head>
+<body>
+<div data-role="page" data-title="jQuery Mobile">
+  <div data-role="header">
+    <h1>jQuery Mobile</h1>
+  </div>
+  <div id="page_main" role="main" class="ui-content">
+    <p>ほげほげほげほげ</p>
+    <p>ほげほげほげほげ</p>
+    ……中略……
+    <p>ほげほげほげほげ</p>
+  </div>
+  <div data-role="footer">
+    Copyright 1998-2014, YAMADA.Yoshihiro
+  </div>
+</div>
+</body>
+</html>

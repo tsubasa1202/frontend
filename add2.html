@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  p { background:yellow; }
+</style>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<input type="button" id="add" value="追加">
+
+<h2>h2要素</h2>
+<p>P要素: </p>
+<script>
+$("#add").click(function(){
+	$('p').append( $('h2') );
+});
+  
+</script>
+</body>
+</html>

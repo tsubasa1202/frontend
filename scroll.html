@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>jQuery TIPS</title>
+<style>
+#top {
+  width: 500px;
+}
+
+#chara {
+  margin: 30px;
+}
+
+#main {
+  position: absolute;
+  top: 150px;
+  left: 250px;
+  width: 250px;
+}
+</style>
+</head>
+<body>
+<div id="top">ようこそWebDeliへ。<br />
+ここにはWebページ作成に役立つ情報やツールが...
+</div>
+<p id="chara"><img src="http://www.web-deli.com/image/home_chara.gif"></p>
+<div id="main">初めて当サイトを訪れてくださった方、ありがとう...中略...
+</div>
+<script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script>
+$(function() {
+  var m = $('#main');
+
+  // <div id="main">要素の表示位置に自動スクロール
+  $(window)
+    .scrollTop(m.offset().top)
+    .scrollLeft(m.offset().left);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>scroll</title>
+  <meta charset="utf-8">
+
+  <style>
+body {
+  font-size: 40px;
+}
+
+#result {
+  position: fixed;
+  top: 10px;
+  left: 100px;
+}
+
+.test {
+  margin-bottom: 1000px;
+}
+
+#last {
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div id="result"></div>
+
+<div class="test">test</div>
+<div class="test" id="last">last</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script>
+var scrollBottom;
+var lastTop = $(document).height();
+
+function getScrollTop(){
+  scrollBottom = $(window).scrollTop() + $(window).height();
+  $("#result").text(scrollBottom + 'px');
+ 
+  if(scrollBottom == lastTop){
+    $("#result").text('lastまでスクロールされました');
+  }
+  else{
+    $("#result").text(scrollBottom + 'px');
+  }
+}
+$(window).on("load scroll resize", getScrollTop);
+</script>
+
+</body>
+</html>
